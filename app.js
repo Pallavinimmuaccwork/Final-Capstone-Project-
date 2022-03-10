@@ -1,4 +1,3 @@
-
 const express = require('express')
 const app = express();
 const cookieparser = require('cookie-parser')
@@ -37,8 +36,7 @@ app.post('/login', async (req, res) => {
             // console.log(data);
             token = await data.ganerateToken();
 
-            // let token = jwt.sign({ email: email }, process.env.SECRET_KEY,);
-
+            // let token = jwt.sign({ email: email }, process.env.SECRET_KEY,)
 
 
             // console.log('TOKEN===>>',token);
@@ -56,6 +54,7 @@ app.post('/login', async (req, res) => {
                         error: false,
                         message: "login succesfull...!",
                         role: data.role,
+                        token:token
                     })
 
                 } else {
@@ -172,7 +171,7 @@ app.post('/thyroid', async (req, res) => {
     const { id, tri, tsh, thyroxine } = req.body
     const thyroid = { tri, tsh, thyroxine }
 
-    await database.updateOne({ _id: id }, { $set: { thyroid: thyroid, test: true } })
+    await databa-se.updateOne({ _id: id }, { $set: { thyroid: thyroid, test: true } })
 
     res.json("data submited")
 })
@@ -186,6 +185,19 @@ app.post('/glucometry', async (req, res) => {
 
     res.send(req.body)
 
+})
+
+app.put('/edituser',async(req,res)=>{
+    
+        let {_id,name}=req.body;
+        await database.updateOne(
+            {_id},{
+                $set:{
+                    name
+                }
+            }
+        )
+    res.send(req.body);
 })
 
 

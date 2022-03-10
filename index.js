@@ -4,7 +4,7 @@ const port = 4400;
 const cookieparser = require('cookie-parser')
 const cors = require('cors')
 
-app.use(cors())
+app.use(cors());
 
 const Authenticate = require('./middleware/Authenticate');
 
@@ -12,10 +12,11 @@ const Authenticate = require('./middleware/Authenticate');
 //    import database connection part
 require("./db/conn");
 
-
 app.use(express.json());
 
 app.use(cookieparser());
+
+
 
 const database = require('./model/dataSchema');
 
@@ -23,8 +24,6 @@ const database = require('./model/dataSchema');
 app.post('/', function (req, res) {
     res.send(req.body)
 })
-
-
 
 app.post('/login', async (req, res) => {
     console.log('login', req.body);
@@ -46,10 +45,9 @@ app.post('/login', async (req, res) => {
 
             // let token = jwt.sign({ email: email }, process.env.SECRET_KEY,);
 
-
-
             // console.log('TOKEN===>>',token);
             res.cookie(`brotokens`, token)
+            console.log(token);
             if (!data) {
                 res.json({
                     error: true,
@@ -58,20 +56,15 @@ app.post('/login', async (req, res) => {
                 })
             } else {
                 res.cookie("brotokens", token)
-                if (data.role === "admin") {
+               
                     res.json({
                         error: false,
                         message: "login succesfull...!",
                         role: data.role,
+                        token:token
                     })
 
-                } else {
-                    res.json({
-                        error: false,
-                        message: "login succesfull...!",
-                        data: data.role
-                    })
-                }
+                
 
             }
 
@@ -88,7 +81,6 @@ app.post('/login', async (req, res) => {
 
 
 });
-
 
 app.post('/register', async (req, res) => {
 
@@ -210,6 +202,19 @@ app.post('/glucometry', async (req, res) => {
         data: null
     });
 
+})
+
+app.put('/edituser',async(req,res)=>{
+    
+    let {_id,name}=req.body;
+    await database.updateOne(
+        {_id},{
+            $set:{
+                name
+            }
+        }
+    )
+res.send(req.body);
 })
 
 app.listen(port, () => {

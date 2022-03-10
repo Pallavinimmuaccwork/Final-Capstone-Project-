@@ -127,6 +127,8 @@ router.post('/register', async (req, res) => {
 router.get('/samples',  Authenticate, async (req, res) => {
     res.send('dfghjk')
 })
-
+router.put('/edituser',async(req,res)=>{
+    res.send('updated successfully')
+})
 
 module.exports= router
